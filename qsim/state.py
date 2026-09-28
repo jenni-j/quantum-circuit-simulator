@@ -7,3 +7,8 @@ def is_normalised(state):
     probability_sum = np.sum(np.abs(state) ** 2)
 
     return np.isclose(probability_sum, 1.0)
+
+def measurement_probabilities(state):
+    probabilities = np.abs(state) ** 2
+
+    return probabilities

@@ -1,6 +1,6 @@
 import numpy as np
 
-from qsim.state import ONE_STATE, ZERO_STATE, is_normalised
+from qsim.state import ONE_STATE, ZERO_STATE, is_normalised, measurement_probabilities
 
 
 def test_zero_state():
@@ -47,3 +47,39 @@ def test_is_normalised_accepts_equal_superposition():
     )
 
     assert is_normalised(equal_superposition_state)
+
+
+def test_measurement_probabilities_for_zero_state():
+    np.testing.assert_array_equal(
+        measurement_probabilities(ZERO_STATE),
+        np.array([1.0, 0.0])
+    )
+
+
+def test_measurement_probabilities_for_equal_superposition():
+    equal_superposition_state = np.array(
+        [1 / np.sqrt(2), 1 / np.sqrt(2)],
+        dtype=np.complex128,
+    )
+
+    np.testing.assert_allclose(
+        measurement_probabilities(equal_superposition_state),
+        np.array([0.5, 0.5]),
+    )
+
+
+def test_relative_phase_does_not_change_computational_basis_probabilities():
+    plus_state = np.array(
+        [1 / np.sqrt(2), 1 / np.sqrt(2)], 
+        dtype=np.complex128
+        )
+    
+    minus_state = np.array(
+        [1 / np.sqrt(2), -1 / np.sqrt(2)], 
+        dtype=np.complex128
+        )
+
+    plus_state_probabilities = measurement_probabilities(plus_state)
+    minus_state_probabilities = measurement_probabilities(minus_state)
+
+    np.testing.assert_allclose(plus_state_probabilities, minus_state_probabilities)
