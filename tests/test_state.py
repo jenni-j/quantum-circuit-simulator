@@ -83,3 +83,17 @@ def test_relative_phase_does_not_change_computational_basis_probabilities():
     minus_state_probabilities = measurement_probabilities(minus_state)
 
     np.testing.assert_allclose(plus_state_probabilities, minus_state_probabilities)
+
+
+def test_measurement_probabilities_for_complex_phase_state():
+    complex_phase_state = np.array(
+        [1 / np.sqrt(2), 1j / np.sqrt(2)],
+        dtype=np.complex128,
+    )
+
+    complex_phase_state_probabilities = measurement_probabilities(complex_phase_state)
+
+    np.testing.assert_allclose(
+        complex_phase_state_probabilities,
+        np.array([0.5, 0.5]),
+    )
