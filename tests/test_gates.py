@@ -24,3 +24,26 @@ def test_hadamard_maps_one_state_to_minus_state():
     transformed_state = HADAMARD @ ONE_STATE
 
     np.testing.assert_allclose(transformed_state, minus_state)
+
+
+def test_hadamard_gate_is_self_inverse():
+    identity_matrix = np.eye(2)
+
+    h_squared = HADAMARD @ HADAMARD
+
+    np.testing.assert_allclose(
+        h_squared, 
+        identity_matrix,
+        atol=1e-15,
+    )
+
+
+def test_hadamard_gate_is_unitary():
+    conjugate_transpose = HADAMARD.conj().T
+    identity_matrix = np.eye(2)
+
+    np.testing.assert_allclose(
+        HADAMARD @ conjugate_transpose,
+        identity_matrix,
+        atol=1e-15,
+    )
