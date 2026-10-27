@@ -47,3 +47,31 @@ def test_hadamard_gate_is_unitary():
         identity_matrix,
         atol=1e-15,
     )
+
+
+def test_hadamard_maps_plus_state_to_zero_state():
+    plus_state = np.array(
+        [1 / np.sqrt(2), 1 / np.sqrt(2)],
+        dtype=np.complex128,
+    )
+
+    result = HADAMARD @ plus_state
+
+    np.testing.assert_allclose(
+        result,
+        ZERO_STATE,
+    )
+
+
+def test_hadamard_maps_minus_state_to_one_state():
+    minus_state = np.array(
+        [1 / np.sqrt(2), -1 / np.sqrt(2)],
+        dtype=np.complex128,
+    )
+
+    result = HADAMARD @ minus_state
+
+    np.testing.assert_allclose(
+        result,
+        ONE_STATE,
+    )
