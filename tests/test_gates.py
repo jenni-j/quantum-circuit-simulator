@@ -1,6 +1,6 @@
 import numpy as np
 
-from qsim.gates import HADAMARD
+from qsim.gates import HADAMARD, PAULI_X, PAULI_Z
 from qsim.state import ONE_STATE, ZERO_STATE
 
 
@@ -74,4 +74,78 @@ def test_hadamard_maps_minus_state_to_one_state():
     np.testing.assert_allclose(
         result,
         ONE_STATE,
+    )
+
+
+def test_pauli_x_maps_zero_state_to_one_state():
+    result = PAULI_X @ ZERO_STATE
+
+    np.testing.assert_allclose(
+        result,
+        ONE_STATE,
+    )
+
+
+def test_pauli_x_maps_one_state_to_zero_state():
+    result = PAULI_X @ ONE_STATE
+
+    np.testing.assert_allclose(
+        result,
+        ZERO_STATE,
+    )
+
+
+def test_pauli_z_maps_zero_state_to_zero_state():
+    result = PAULI_Z @ ZERO_STATE
+
+    np.testing.assert_allclose(
+        result,
+        ZERO_STATE,
+    )
+
+
+def test_pauli_z_maps_one_state_to_negative_one_state():
+    result = PAULI_Z @ ONE_STATE
+
+    np.testing.assert_allclose(
+        result,
+        -ONE_STATE,
+    )
+
+
+def test_pauli_z_maps_plus_state_to_minus_state():
+    plus_state = np.array(
+        [1 / np.sqrt(2), 1 / np.sqrt(2)],
+        dtype=np.complex128,
+    )
+
+    minus_state = np.array(
+        [1 / np.sqrt(2), -1 / np.sqrt(2)],
+        dtype=np.complex128,
+    )
+
+    result = PAULI_Z @ plus_state
+
+    np.testing.assert_allclose(
+        result,
+        minus_state,
+    )
+
+
+def test_pauli_z_maps_minus_state_to_plus_state():
+    plus_state = np.array(
+        [1 / np.sqrt(2), 1 / np.sqrt(2)],
+        dtype=np.complex128,
+    )
+
+    minus_state = np.array(
+        [1 / np.sqrt(2), -1 / np.sqrt(2)],
+        dtype=np.complex128,
+    )
+
+    result = PAULI_Z @ minus_state
+
+    np.testing.assert_allclose(
+        result,
+        plus_state,
     )
