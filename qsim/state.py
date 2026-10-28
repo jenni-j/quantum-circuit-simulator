@@ -12,3 +12,6 @@ def measurement_probabilities(state):
     probabilities = np.abs(state) ** 2
 
     return probabilities
+
+def tensor_product(state_a, state_b):
+    return np.kron(state_a, state_b)

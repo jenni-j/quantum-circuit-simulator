@@ -1,6 +1,12 @@
 import numpy as np
 
-from qsim.state import ONE_STATE, ZERO_STATE, is_normalised, measurement_probabilities
+from qsim.state import (
+    ONE_STATE,
+    ZERO_STATE,
+    is_normalised,
+    measurement_probabilities,
+    tensor_product,
+)
 
 
 def test_zero_state():
@@ -96,4 +102,34 @@ def test_measurement_probabilities_for_complex_phase_state():
     np.testing.assert_allclose(
         complex_phase_state_probabilities,
         np.array([0.5, 0.5]),
+    )
+
+
+def test_tensor_product_of_zero_state_and_one_state():
+    result = tensor_product(ZERO_STATE, ONE_STATE)
+
+    np.testing.assert_allclose(
+        result,
+        np.array(
+            [0, 1, 0, 0],
+            dtype=np.complex128,
+        ),
+    )
+
+
+def test_tensor_product_of_plus_state_and_zero_state():
+    plus_state = np.array(
+        [1 / np.sqrt(2), 1 / np.sqrt(2)], 
+        dtype=np.complex128
+    )
+
+    result = tensor_product(plus_state, ZERO_STATE)
+
+    np.testing.assert_allclose(
+        result,
+        (1 / np.sqrt(2))
+        * np.array(
+            [1, 0, 1, 0],
+            dtype=np.complex128,
+        ),
     )
