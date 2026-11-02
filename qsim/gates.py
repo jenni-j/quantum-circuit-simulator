@@ -23,3 +23,13 @@ PAULI_Z = np.array(
     ],
     dtype=np.complex128,
 )
+
+CNOT = np.array(
+    [
+        [1, 0, 0, 0],
+        [0, 1, 0, 0],
+        [0, 0, 0, 1],
+        [0, 0, 1, 0],
+    ],
+    dtype=np.complex128,
+)

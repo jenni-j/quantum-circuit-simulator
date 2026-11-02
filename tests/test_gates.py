@@ -1,7 +1,7 @@
 import numpy as np
 
-from qsim.gates import HADAMARD, PAULI_X, PAULI_Z
-from qsim.state import ONE_STATE, ZERO_STATE
+from qsim.gates import CNOT, HADAMARD, PAULI_X, PAULI_Z
+from qsim.state import ONE_STATE, ZERO_STATE, tensor_product
 
 
 def test_hadamard_maps_zero_state_to_plus_state():
@@ -148,4 +148,65 @@ def test_pauli_z_maps_minus_state_to_plus_state():
     np.testing.assert_allclose(
         result,
         plus_state,
+    )
+
+
+def test_cnot_maps_zero_zero_state_to_zero_zero_state():
+    zero_zero_state = tensor_product(ZERO_STATE, ZERO_STATE)
+
+    result = CNOT @ zero_zero_state
+
+    np.testing.assert_allclose(
+        result,
+        zero_zero_state,
+    )
+
+
+def test_cnot_maps_zero_one_state_to_zero_one_state():
+    zero_one_state = tensor_product(ZERO_STATE, ONE_STATE)
+
+    result = CNOT @ zero_one_state
+
+    np.testing.assert_allclose(
+        result,
+        zero_one_state,
+    )
+
+
+def test_cnot_maps_one_zero_state_to_one_one_state():
+    one_zero_state = tensor_product(ONE_STATE, ZERO_STATE)
+    one_one_state = tensor_product(ONE_STATE, ONE_STATE)
+
+    result = CNOT @ one_zero_state
+
+    np.testing.assert_allclose(
+        result,
+        one_one_state,
+    )
+
+
+def test_cnot_maps_one_one_state_to_one_zero_state():
+    one_one_state = tensor_product(ONE_STATE, ONE_STATE)
+    one_zero_state = tensor_product(ONE_STATE, ZERO_STATE)
+
+    result = CNOT @ one_one_state
+
+    np.testing.assert_allclose(
+        result,
+        one_zero_state,
+    )
+
+
+def test_cnot_maps_superposition_to_bell_state():
+    zero_zero_state = tensor_product(ZERO_STATE, ZERO_STATE)
+    one_zero_state = tensor_product(ONE_STATE, ZERO_STATE)
+    one_one_state = tensor_product(ONE_STATE, ONE_STATE)
+    superposition_state = (1/np.sqrt(2)) * (zero_zero_state + one_zero_state)
+    bell_state = (1/np.sqrt(2)) * (zero_zero_state + one_one_state)
+
+    result = CNOT @ superposition_state
+
+    np.testing.assert_allclose(
+        result,
+        bell_state,
     )
