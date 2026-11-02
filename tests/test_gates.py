@@ -201,12 +201,39 @@ def test_cnot_maps_superposition_to_bell_state():
     zero_zero_state = tensor_product(ZERO_STATE, ZERO_STATE)
     one_zero_state = tensor_product(ONE_STATE, ZERO_STATE)
     one_one_state = tensor_product(ONE_STATE, ONE_STATE)
-    superposition_state = (1/np.sqrt(2)) * (zero_zero_state + one_zero_state)
-    bell_state = (1/np.sqrt(2)) * (zero_zero_state + one_one_state)
+    superposition_state = (1 / np.sqrt(2)) * (zero_zero_state + one_zero_state)
+    bell_state = (1 / np.sqrt(2)) * (zero_zero_state + one_one_state)
 
     result = CNOT @ superposition_state
 
     np.testing.assert_allclose(
         result,
         bell_state,
+    )
+
+
+def test_hadamard_on_first_qubit_creates_two_qubit_superposition():
+    hadamard_first_qubit = np.kron(HADAMARD, np.eye(2))
+    zero_zero_state = tensor_product(ZERO_STATE, ZERO_STATE)
+    one_zero_state = tensor_product(ONE_STATE, ZERO_STATE)
+
+    result = hadamard_first_qubit @ zero_zero_state
+
+    np.testing.assert_allclose(
+        result,
+        (1 / np.sqrt(2)) * (zero_zero_state + one_zero_state),
+    )
+
+
+def test_hadamard_then_cnot_creates_bell_state():
+    hadamard_first_qubit = np.kron(HADAMARD, np.eye(2))
+    zero_zero_state = tensor_product(ZERO_STATE, ZERO_STATE)
+    one_one_state = tensor_product(ONE_STATE, ONE_STATE)
+    superposition_state = hadamard_first_qubit @ zero_zero_state
+
+    result = CNOT @ superposition_state
+
+    np.testing.assert_allclose(
+        result,
+        (1 / np.sqrt(2)) * (zero_zero_state + one_one_state),
     )
