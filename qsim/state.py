@@ -15,3 +15,21 @@ def measurement_probabilities(state):
 
 def tensor_product(state_a, state_b):
     return np.kron(state_a, state_b)
+
+def marginal_probabilities(state, qubit_index):
+    probabilities = measurement_probabilities(state)
+
+    if qubit_index == 0:
+        return np.array(
+            [
+                probabilities[0] + probabilities[1],
+                probabilities[2] + probabilities[3],
+            ]
+        )
+    elif qubit_index == 1:
+        return np.array(
+            [
+                probabilities[0] + probabilities[2],
+                probabilities[1] + probabilities[3],
+            ]
+        )

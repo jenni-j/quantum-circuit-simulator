@@ -4,6 +4,7 @@ from qsim.state import (
     ONE_STATE,
     ZERO_STATE,
     is_normalised,
+    marginal_probabilities,
     measurement_probabilities,
     tensor_product,
 )
@@ -132,4 +133,79 @@ def test_tensor_product_of_plus_state_and_zero_state():
             [1, 0, 1, 0],
             dtype=np.complex128,
         ),
+    )
+
+
+def test_measurement_probabilities_for_bell_state():
+    zero_zero_state = tensor_product(ZERO_STATE, ZERO_STATE)
+    one_one_state = tensor_product(ONE_STATE, ONE_STATE)
+    bell_state = (1 / np.sqrt(2)) * (zero_zero_state + one_one_state)
+
+    result = measurement_probabilities(bell_state)
+
+    np.testing.assert_allclose(
+        result,
+        np.array([0.5, 0, 0, 0.5]),
+    )
+
+
+def test_first_qubit_marginal_probabilities_for_bell_state():
+    zero_zero_state = tensor_product(ZERO_STATE, ZERO_STATE)
+    one_one_state = tensor_product(ONE_STATE, ONE_STATE)
+    bell_state = (1 / np.sqrt(2)) * (zero_zero_state + one_one_state)
+
+    probabilities = measurement_probabilities(bell_state)
+
+    probability_first_qubit_zero = probabilities[0] + probabilities[1]
+    probability_first_qubit_one = probabilities[2] + probabilities[3]
+
+    np.testing.assert_allclose(
+        probability_first_qubit_zero,
+        0.5,
+    )
+
+    np.testing.assert_allclose(
+        probability_first_qubit_one,
+        0.5,
+    )
+
+
+def test_first_qubit_marginal_probabilities_for_zero_one_state():
+    zero_one_state = tensor_product(ZERO_STATE, ONE_STATE)
+
+    probabilities = marginal_probabilities(zero_one_state, 0)
+
+    np.testing.assert_allclose(
+        probabilities,
+        np.array([1.0, 0.0]),
+    )
+
+
+def test_second_qubit_marginal_probabilities_for_zero_one_state():
+    zero_one_state = tensor_product(ZERO_STATE, ONE_STATE)
+
+    probabilities = marginal_probabilities(zero_one_state, 1)
+
+    np.testing.assert_allclose(
+        probabilities,
+        np.array([0.0, 1.0]),
+    )
+
+
+def test_marginal_probabilities_for_bell_state():
+    zero_zero_state = tensor_product(ZERO_STATE, ZERO_STATE)
+    one_one_state = tensor_product(ONE_STATE, ONE_STATE)
+    bell_state = (1 / np.sqrt(2)) * (zero_zero_state + one_one_state)
+
+    probabilities_first_qubit = marginal_probabilities(bell_state, 0)
+    probabilities_second_qubit = marginal_probabilities(bell_state, 1)
+
+    np.testing.assert_allclose(
+        probabilities_first_qubit,
+        np.array([0.5, 0.5]),
+    )
+
+    np.testing.assert_allclose(
+        probabilities_second_qubit,
+        np.array([0.5, 0.5]),
     )
