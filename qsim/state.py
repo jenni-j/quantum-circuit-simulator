@@ -33,3 +33,28 @@ def marginal_probabilities(state, qubit_index):
                 probabilities[1] + probabilities[3],
             ]
         )
+
+def collapse_state(state, qubit_index, outcome):
+    collapsed_state = state.copy()
+
+    if qubit_index == 0:
+        if outcome == 0:
+            collapsed_state[2] = 0
+            collapsed_state[3] = 0
+        elif outcome == 1:
+            collapsed_state[0] = 0
+            collapsed_state[1] = 0
+    elif qubit_index == 1:
+        if outcome == 0:
+            collapsed_state[1] = 0
+            collapsed_state[3] = 0
+        elif outcome == 1:
+            collapsed_state[0] = 0
+            collapsed_state[2] = 0
+
+    norm = np.linalg.norm(collapsed_state)
+
+    if np.isclose(norm, 0.0):
+        raise ValueError("collapse onto an impossible measurement outcome")
+    
+    return collapsed_state / norm

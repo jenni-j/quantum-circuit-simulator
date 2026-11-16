@@ -1,8 +1,10 @@
 import numpy as np
+import pytest
 
 from qsim.state import (
     ONE_STATE,
     ZERO_STATE,
+    collapse_state,
     is_normalised,
     marginal_probabilities,
     measurement_probabilities,
@@ -209,3 +211,62 @@ def test_marginal_probabilities_for_bell_state():
         probabilities_second_qubit,
         np.array([0.5, 0.5]),
     )
+
+
+def test_collapse_bell_state_when_first_qubit_is_zero():
+    zero_zero_state = tensor_product(ZERO_STATE, ZERO_STATE)
+    one_one_state = tensor_product(ONE_STATE, ONE_STATE)
+    bell_state = (1 / np.sqrt(2)) * (zero_zero_state + one_one_state)
+
+    result = collapse_state(bell_state, 0, 0)
+
+    np.testing.assert_allclose(
+        result,
+        zero_zero_state,
+    )
+
+
+def test_collapse_bell_state_when_first_qubit_is_one():
+    zero_zero_state = tensor_product(ZERO_STATE, ZERO_STATE)
+    one_one_state = tensor_product(ONE_STATE, ONE_STATE)
+    bell_state = (1 / np.sqrt(2)) * (zero_zero_state + one_one_state)
+
+    result = collapse_state(bell_state, 0, 1)
+
+    np.testing.assert_allclose(
+        result,
+        one_one_state,
+    )
+
+
+def test_collapse_bell_state_when_second_qubit_is_zero():
+    zero_zero_state = tensor_product(ZERO_STATE, ZERO_STATE)
+    one_one_state = tensor_product(ONE_STATE, ONE_STATE)
+    bell_state = (1 / np.sqrt(2)) * (zero_zero_state + one_one_state)
+
+    result = collapse_state(bell_state, 1, 0)
+
+    np.testing.assert_allclose(
+        result,
+        zero_zero_state,
+    )
+
+
+def test_collapse_bell_state_when_second_qubit_is_one():
+    zero_zero_state = tensor_product(ZERO_STATE, ZERO_STATE)
+    one_one_state = tensor_product(ONE_STATE, ONE_STATE)
+    bell_state = (1 / np.sqrt(2)) * (zero_zero_state + one_one_state)
+
+    result = collapse_state(bell_state, 1, 1)
+
+    np.testing.assert_allclose(
+        result,
+        one_one_state,
+    )
+
+
+def test_collapse_state_rejects_impossible_outcome():
+    zero_zero_state = tensor_product(ZERO_STATE, ZERO_STATE)
+
+    with pytest.raises(ValueError):
+        collapse_state(zero_zero_state, 0, 1)
