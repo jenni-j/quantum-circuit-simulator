@@ -7,6 +7,7 @@ from qsim.state import (
     collapse_state,
     is_normalised,
     marginal_probabilities,
+    measure_qubit,
     measurement_probabilities,
     tensor_product,
 )
@@ -270,3 +271,50 @@ def test_collapse_state_rejects_impossible_outcome():
 
     with pytest.raises(ValueError):
         collapse_state(zero_zero_state, 0, 1)
+
+
+def test_measure_first_qubit_of_zero_one_state():
+    zero_one_state = tensor_product(ZERO_STATE, ONE_STATE)
+
+    outcome, collapsed_state = measure_qubit(zero_one_state, 0)
+
+    assert outcome == 0
+
+    np.testing.assert_allclose(
+        collapsed_state,
+        zero_one_state,
+    )
+
+
+def test_measure_second_qubit_of_zero_one_state():
+    zero_one_state = tensor_product(ZERO_STATE, ONE_STATE)
+
+    outcome, collapsed_state = measure_qubit(zero_one_state, 1)
+
+    assert outcome == 1
+
+    np.testing.assert_allclose(
+        collapsed_state,
+        zero_one_state,
+    )
+
+
+def test_measure_first_qubit_of_bell_state():
+    zero_zero_state = tensor_product(ZERO_STATE, ZERO_STATE)
+    one_one_state = tensor_product(ONE_STATE, ONE_STATE)
+    bell_state = (1 / np.sqrt(2)) * (zero_zero_state + one_one_state)
+
+    outcome, collapsed_state = measure_qubit(bell_state, 0)
+
+    assert outcome in (0, 1)
+
+    if outcome == 0:
+        np.testing.assert_allclose(
+            collapsed_state,
+            zero_zero_state,
+        )
+    else:
+        np.testing.assert_allclose(
+            collapsed_state,
+            one_one_state,
+        )

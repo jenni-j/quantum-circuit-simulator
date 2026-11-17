@@ -58,3 +58,12 @@ def collapse_state(state, qubit_index, outcome):
         raise ValueError("collapse onto an impossible measurement outcome")
     
     return collapsed_state / norm
+
+def measure_qubit(state, qubit_index):
+    probabilities = marginal_probabilities(state, qubit_index)
+
+    outcome = np.random.choice([0, 1], p=probabilities)
+
+    collapsed_state = collapse_state(state, qubit_index, outcome)
+
+    return outcome, collapsed_state
