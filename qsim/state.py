@@ -3,18 +3,22 @@ import numpy as np
 ZERO_STATE = np.array([1, 0], dtype=np.complex128)
 ONE_STATE = np.array([0, 1], dtype=np.complex128)
 
+
 def is_normalised(state):
     probability_sum = np.sum(np.abs(state) ** 2)
 
     return np.isclose(probability_sum, 1.0)
+
 
 def measurement_probabilities(state):
     probabilities = np.abs(state) ** 2
 
     return probabilities
 
+
 def tensor_product(state_a, state_b):
     return np.kron(state_a, state_b)
+
 
 def marginal_probabilities(state, qubit_index):
     probabilities = measurement_probabilities(state)
@@ -33,6 +37,7 @@ def marginal_probabilities(state, qubit_index):
                 probabilities[1] + probabilities[3],
             ]
         )
+
 
 def collapse_state(state, qubit_index, outcome):
     collapsed_state = state.copy()
@@ -56,8 +61,9 @@ def collapse_state(state, qubit_index, outcome):
 
     if np.isclose(norm, 0.0):
         raise ValueError("collapse onto an impossible measurement outcome")
-    
+
     return collapsed_state / norm
+
 
 def measure_qubit(state, qubit_index):
     probabilities = marginal_probabilities(state, qubit_index)

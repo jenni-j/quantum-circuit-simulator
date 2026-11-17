@@ -32,7 +32,7 @@ def test_hadamard_gate_is_self_inverse():
     h_squared = HADAMARD @ HADAMARD
 
     np.testing.assert_allclose(
-        h_squared, 
+        h_squared,
         identity_matrix,
         atol=1e-15,
     )

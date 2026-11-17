@@ -52,17 +52,14 @@ def test_is_normalised_rejects_unnormalised_state():
 
 
 def test_is_normalised_accepts_equal_superposition():
-    equal_superposition_state = np.array(
-        [1 / np.sqrt(2), 1 / np.sqrt(2)]
-    )
+    equal_superposition_state = np.array([1 / np.sqrt(2), 1 / np.sqrt(2)])
 
     assert is_normalised(equal_superposition_state)
 
 
 def test_measurement_probabilities_for_zero_state():
     np.testing.assert_array_equal(
-        measurement_probabilities(ZERO_STATE),
-        np.array([1.0, 0.0])
+        measurement_probabilities(ZERO_STATE), np.array([1.0, 0.0])
     )
 
 
@@ -79,15 +76,9 @@ def test_measurement_probabilities_for_equal_superposition():
 
 
 def test_relative_phase_does_not_change_computational_basis_probabilities():
-    plus_state = np.array(
-        [1 / np.sqrt(2), 1 / np.sqrt(2)], 
-        dtype=np.complex128
-        )
-    
-    minus_state = np.array(
-        [1 / np.sqrt(2), -1 / np.sqrt(2)], 
-        dtype=np.complex128
-        )
+    plus_state = np.array([1 / np.sqrt(2), 1 / np.sqrt(2)], dtype=np.complex128)
+
+    minus_state = np.array([1 / np.sqrt(2), -1 / np.sqrt(2)], dtype=np.complex128)
 
     plus_state_probabilities = measurement_probabilities(plus_state)
     minus_state_probabilities = measurement_probabilities(minus_state)
@@ -122,10 +113,7 @@ def test_tensor_product_of_zero_state_and_one_state():
 
 
 def test_tensor_product_of_plus_state_and_zero_state():
-    plus_state = np.array(
-        [1 / np.sqrt(2), 1 / np.sqrt(2)], 
-        dtype=np.complex128
-    )
+    plus_state = np.array([1 / np.sqrt(2), 1 / np.sqrt(2)], dtype=np.complex128)
 
     result = tensor_product(plus_state, ZERO_STATE)
 
