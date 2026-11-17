@@ -306,3 +306,31 @@ def test_measure_first_qubit_of_bell_state():
             collapsed_state,
             one_one_state,
         )
+
+
+def test_marginal_probabilities_rejects_invalid_qubit_index():
+    zero_zero_state = tensor_product(ZERO_STATE, ZERO_STATE)
+
+    with pytest.raises(ValueError):
+        marginal_probabilities(zero_zero_state, 2)
+
+
+def test_collapse_state_rejects_invalid_qubit_index():
+    zero_zero_state = tensor_product(ZERO_STATE, ZERO_STATE)
+
+    with pytest.raises(ValueError):
+        collapse_state(zero_zero_state, 2, 0)
+
+
+def test_collapse_state_rejects_invalid_outcome():
+    zero_zero_state = tensor_product(ZERO_STATE, ZERO_STATE)
+
+    with pytest.raises(ValueError):
+        collapse_state(zero_zero_state, 0, 2)
+
+
+def test_measure_qubit_rejects_invalid_qubit_index():
+    zero_zero_state = tensor_product(ZERO_STATE, ZERO_STATE)
+
+    with pytest.raises(ValueError):
+        measure_qubit(zero_zero_state, 2)

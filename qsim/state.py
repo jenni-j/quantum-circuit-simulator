@@ -21,6 +21,9 @@ def tensor_product(state_a, state_b):
 
 
 def marginal_probabilities(state, qubit_index):
+    if qubit_index not in (0, 1):
+        raise ValueError("qubit_index must be 0 or 1")
+
     probabilities = measurement_probabilities(state)
 
     if qubit_index == 0:
@@ -40,6 +43,12 @@ def marginal_probabilities(state, qubit_index):
 
 
 def collapse_state(state, qubit_index, outcome):
+    if qubit_index not in (0, 1):
+        raise ValueError("qubit_index must be 0 or 1")
+
+    if outcome not in (0, 1):
+        raise ValueError("outcome must be 0 or 1")
+
     collapsed_state = state.copy()
 
     if qubit_index == 0:
